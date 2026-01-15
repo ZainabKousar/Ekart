@@ -1,167 +1,193 @@
-# Spring Boot Shopping Cart Web App
+🚀 Spring Boot Application – DevOps CI/CD & Kubernetes Deployment
+📌 Project Overview
 
-## About
+This repository demonstrates a complete DevOps deployment pipeline for a Spring Boot application.
+The main focus of this project is automation, security, containerization, and Kubernetes deployment using real-world DevOps tools.
 
-This is a demo project for practicing Spring + Thymeleaf. The idea was to build some basic shopping cart web app.
+🏗️ Deployment Architecture
 
-It was made using **Spring Boot**, **Spring Security**, **Thymeleaf**, **Spring Data JPA**, **Spring Data REST and Docker**. 
-Database is in memory **H2**.
+The application is deployed using a fully automated CI/CD pipeline:
 
-There is a login and registration functionality included.
+Code is pushed to GitHub
 
-Users can shop for products. Each user has his own shopping cart (session functionality).
-Checkout is transactional.
+Jenkins pipeline is triggered automatically
 
-## Configuration
+Application is built using Maven
 
-### Configuration Files
+Code quality is analyzed using SonarQube
 
-Folder **src/resources/** contains config files for **shopping-cart** Spring Boot application.
+Dependency vulnerabilities are scanned using OWASP
 
-* **src/resources/application.properties** - main configuration file. Here it is possible to change admin username/password,
-as well as change the port number.
+Docker image is built
 
-## How to run
+Docker image is scanned using Trivy
 
-There are several ways to run the application. You can run it from the command line with included Maven Wrapper, Maven or Docker. 
+Image is deployed to Kubernetes cluster
 
-Once the app starts, go to the web browser and visit `http://localhost:8070/home`
+Application is exposed using Kubernetes Service
 
-Admin username: **admin**
+🧰 Tools Used for Deployment
+🔹 CI/CD & Build
 
-Admin password: **admin**
+GitHub – Source code repository
 
-User username: **user**
+Jenkins – CI/CD automation
 
-User password: **password**
+Maven – Build and packaging
 
-### Maven Wrapper
+🔹 Security & Quality
 
-#### Using the Maven Plugin
+SonarQube – Static code analysis
 
-Go to the root folder of the application and type:
-```bash
-$ chmod +x scripts/mvnw
-$ scripts/mvnw spring-boot:run
-```
+OWASP Dependency Check – Dependency vulnerability scan
 
-#### Using Executable Jar
+Trivy – Container image vulnerability scanning
 
-Or you can build the JAR file with 
-```bash
-$ scripts/mvnw clean package
-``` 
+🔹 Container & Orchestration
 
-Then you can run the JAR file:
-```bash
-$ java -jar target/shopping-cart-0.0.1-SNAPSHOT.jar
-```
+Docker – Application containerization
 
-### Maven
+Kubernetes (kubeadm cluster) – Container orchestration
 
-Open a terminal and run the following commands to ensure that you have valid versions of Java and Maven installed:
+Calico – Networking
 
-```bash
-$ java -version
-java version "1.8.0_102"
-Java(TM) SE Runtime Environment (build 1.8.0_102-b14)
-Java HotSpot(TM) 64-Bit Server VM (build 25.102-b14, mixed mode)
-```
+ServiceAccount & RBAC – Secure cluster access
 
-```bash
-$ mvn -v
-Apache Maven 3.3.9 (bb52d8502b132ec0a5a3f4c09453c07478323dc5; 2015-11-10T16:41:47+00:00)
-Maven home: /usr/local/Cellar/maven/3.3.9/libexec
-Java version: 1.8.0_102, vendor: Oracle Corporation
-```
+🔹 Infrastructure
 
-#### Using the Maven Plugin
+AWS EC2 – Jenkins server and Kubernetes nodes
 
-The Spring Boot Maven plugin includes a run goal that can be used to quickly compile and run your application. 
-Applications run in an exploded form, as they do in your IDE. 
-The following example shows a typical Maven command to run a Spring Boot application:
- 
-```bash
-$ mvn spring-boot:run
-``` 
+Security Groups – Network access control
 
-#### Using Executable Jar
+⚙️ Jenkins CI/CD Pipeline Details
 
-To create an executable jar run:
+The Jenkins pipeline performs the following stages:
 
-```bash
-$ mvn clean package
-``` 
+Source Code Checkout
 
-To run that application, use the java -jar command, as follows:
+Pulls code from GitHub repository
 
-```bash
-$ java -jar target/shopping-cart-0.0.1-SNAPSHOT.jar
-```
+Build Stage
 
-To exit the application, press **ctrl-c**.
+Builds the application using Maven
 
-### Docker
+Code Quality Analysis
 
-It is possible to run **shopping-cart** using Docker:
+Runs SonarQube analysis to detect bugs and code smells
 
-Build Docker image:
-```bash
-$ mvn clean package
-$ docker build -t shopping-cart:dev -f docker/Dockerfile .
-```
+Security Scan (Dependencies)
 
-Run Docker container:
-```bash
-$ docker run --rm -i -p 8070:8070 \
-      --name shopping-cart \
-      shopping-cart:dev
-```
+Runs OWASP Dependency Check to find known vulnerabilities
 
-##### Helper script
+Docker Image Build
 
-It is possible to run all of the above with helper script:
+Builds Docker image using Dockerfile
 
-```bash
-$ chmod +x scripts/run_docker.sh
-$ scripts/run_docker.sh
-```
+Container Image Scan
 
-## Docker 
+Scans Docker image using Trivy for CVEs
 
-Folder **docker** contains:
+Push Image
 
-* **docker/shopping-cart/Dockerfile** - Docker build file for executing shopping-cart Docker image. 
-Instructions to build artifacts, copy build artifacts to docker image and then run app on proper port with proper configuration file.
+Pushes Docker image to Docker Hub
 
-## Util Scripts
+Kubernetes Deployment
 
-* **scripts/run_docker.sh.sh** - util script for running shopping-cart Docker container using **docker/Dockerfile**
+Applies Kubernetes YAML files using kubectl
 
-## Tests
+Deploys application pods and services
 
-Tests can be run by executing following command from the root of the project:
+🔐 Kubernetes Access & Security
 
-```bash
-$ mvn test
-```
+Jenkins runs on a separate server
 
-## Helper Tools
+Kubernetes cluster is accessed securely using:
 
-### HAL REST Browser
+ServiceAccount
 
-Go to the web browser and visit `http://localhost:8070/`
+ClusterRole & ClusterRoleBinding
 
-You will need to be authenticated to be able to see this page.
+Jenkins does not use admin credentials
 
-### H2 Database web interface
+Access is restricted using RBAC best practices
 
-Go to the web browser and visit `http://localhost:8070/h2-console`
+☸️ Kubernetes Resources Used
 
-In field **JDBC URL** put 
-```
-jdbc:h2:mem:shopping_cart_db
-```
+Namespace – Logical isolation
 
-In `/src/main/resources/application.properties` file it is possible to change both
-web interface url path, as well as the datasource url.
+Deployment – Manages pods and replicas
+
+Service (NodePort / LoadBalancer) – Exposes application
+
+ServiceAccount – Jenkins authentication
+
+RBAC – Permission control
+
+🌐 Application Exposure
+
+Application is exposed using:
+
+NodePort (30000–32767) or
+
+LoadBalancer (cloud-based)
+
+Security groups allow required ports only
+
+Accessed via:
+
+http://<Node_Public_IP>:<NodePort>
+
+🧪 Verification & Monitoring
+
+kubectl get nodes – Cluster health
+
+kubectl get pods – Pod status
+
+kubectl get svc – Service exposure
+
+Jenkins build logs for pipeline validation
+
+🎯 Key DevOps Highlights
+
+End-to-end automated CI/CD pipeline
+
+Secure Kubernetes access using RBAC
+
+Integrated security scanning at multiple stages
+
+Production-like Kubernetes deployment
+
+Separate Jenkins and Kubernetes servers
+
+📌 Use Case
+
+This project demonstrates real-world DevOps deployment skills including:
+
+CI/CD automation
+
+Kubernetes deployments
+
+Container security
+
+Cloud infrastructure usage
+
+<img width="1920" height="1080" alt="Screenshot (19)" src="https://github.com/user-attachments/assets/144463c4-626a-4f3c-b3fc-83025275e469" />
+
+
+<img width="1920" height="1080" alt="Screenshot (33)" src="https://github.com/user-attachments/assets/a355eca3-2ad3-47aa-9b0b-2e430618b945" />
+
+<img width="1920" height="1080" alt="Screenshot (35)" src="https://github.com/user-attachments/assets/6f74ced5-2486-45a8-b10e-d9e4881c4b12" />
+
+<img width="1920" height="1080" alt="Screenshot (36)" src="https://github.com/user-attachments/assets/4e5eebae-3f02-451c-ba29-9e2d1795229c" />
+
+<img width="1920" height="1080" alt="Screenshot (37)" src="https://github.com/user-attachments/assets/18475c0a-befd-4d3d-ac45-83dae22e3b36" />
+
+<img width="1920" height="1080" alt="Screenshot (10)" src="https://github.com/user-attachments/assets/3a19ed2c-dc04-45eb-88c2-5d582503fb40" />
+
+<img width="1920" height="1080" alt="Screenshot (9)" src="https://github.com/user-attachments/assets/43438bc8-b5ee-46b8-9ae5-ef4af700888d" />
+
+<img width="1920" height="1080" alt="Screenshot (15)" src="https://github.com/user-attachments/assets/49c00c85-d53a-4c2e-99b6-9e810bf6e57e" />
+
+<img width="1920" height="1080" alt="Screenshot (13)" src="https://github.com/user-attachments/assets/16e0d183-3cfc-491c-b92f-3674c96c88f1" />
+
+<img width="1920" height="1080" alt="Screenshot (18)" src="https://github.com/user-attachments/assets/79ad550d-636b-490f-b455-631d7ea9235d" />
